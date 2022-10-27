@@ -32,6 +32,7 @@ exports.getCategorieById = async(req,res) =>{
                 dataDisplay = {
                     idCategorie: cat.id_categorie,
                     nomCategorie: cat.nom_categorie,
+                    imgCategorie: cat.img_categorie,
                 }
                 data.push(dataDisplay);
             });
