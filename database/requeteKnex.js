@@ -34,10 +34,12 @@ function getServiceByUser(id) {
 // Requete pour delete un service
 async function deleteService(id) {
     await knex('avis').where('id_service', id).del()
+    await knex('photos').where('id_service', id).del()
     await knex('services').where('id_service', id).del()
     const dataService = await getService(id);
     const dataAvis = await getAvis(id);
-    if (dataService.length === 0 && dataAvis.length === 0) {
+    const dataPhoto = await getImage(id);
+    if (dataService.length === 0 && dataAvis.length === 0 && dataPhoto.length === 0) {
         return true;
     } else {
         return false;
@@ -56,6 +58,35 @@ function getAllCategories() {
 function getCategorieById(id) {
     return knex('categories')
                 .where('id_categorie', id);;
+}
+
+
+//----------------------------------------------- PHOTOS -----------------------------------------------//
+
+//get des image
+function getImage(id) {
+    return knex('photos').where('id_service', id);
+}
+
+// Requete pour ajouter une photo
+function addImage(photos) {
+    return knex('photos').insert(photos)
+}
+
+// Requete pour update une photo avec le id
+function updateImage(id, photo) {
+    return knex('photos').where('id_photo', id).update(photo);  
+}
+
+// Requete pour supprimer une photo avec le id
+async function deleteImage(id) {
+    await knex('photos').where('id_photo', id).del()
+    const data = await getImage(id);
+    if (data.length === 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -96,5 +127,8 @@ module.exports = {
     addAvis,
     getAvis,
     updateAvis,
-    deleteAvis
+    deleteAvis,
+    addImage,
+    updateImage,
+    deleteImage
 };

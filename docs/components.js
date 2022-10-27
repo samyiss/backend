@@ -518,7 +518,7 @@ module.exports = {
         },
         categorieResponse: {
           type: "object",
-          required: ["idCategorie", "nomCategorie"],
+          required: ["idCategorie", "nomCategorie", "imgCategorie"],
           properties: {
             idCategorie: {
               type: "string", // data-type
@@ -526,10 +526,14 @@ module.exports = {
             nomCategorie: {
               type: "string", // data-type
             },
+            imgCategorie: {
+              type: "string", // data-type
+            },
           },
           example: { 
             idCategorie: 1, 
             nomCategorie: "jardinerie", 
+            imgCategorie: "https://pokemonsapi.herokuapp.com/img/1.png",
           } ,
         },        
       },

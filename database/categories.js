@@ -10,6 +10,7 @@ exports.getAllCategories = async(req,res) =>{
                 dataDisplay = {
                     idCategorie: categorie.id_categorie,
                     nomCategorie: categorie.nom_categorie,
+                    imgCategorie: categorie.img_categorie,
                 }
                 data.push(dataDisplay);
             });
