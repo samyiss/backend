@@ -1,7 +1,7 @@
 {
   "name": "express-auth-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,5 +27,17 @@
     "sqlite3": "^5.0.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"
-  }
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/near_me/backend.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/near_me/backend/issues"
+  },
+  "homepage": "https://gitlab.com/near_me/backend#readme"
 }
