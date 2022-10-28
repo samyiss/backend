@@ -96,7 +96,7 @@ function addAvis(avis) {
 }
 
 function getAvis(id) {
-    return knex('avis').where('id_avis', id).orWhere('id_service', id);
+    return knex('avis').where('id_avis', id).orWhere('id_service', id).orWhere('id_user',id).orWhere('ic_client',id);
 }
 
 function updateAvis(id, avis) {
@@ -104,7 +104,7 @@ function updateAvis(id, avis) {
 }
 
 async function deleteAvis(id) {
-    await knex('avis').where('id_avis', id).del();
+    await knex('avis').where('id_avis', id).orWhere('id_user',id).orWhere('ic_client',id).del();
     const data = await getAvis(id);
     if (data.length === 0) {
         return true;

@@ -1,6 +1,6 @@
 const { getAuth, signInWithEmailAndPassword, sendEmailVerification, updateEmail, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential} = require("firebase/auth");
 const { getDatabase, ref, set, get, child, remove } = require("firebase/database");
-
+const { deleteService, deleteAvis } = require("./requeteKnex");
 const { fapp } = require('./firebaseconf');
 const { getServiceByUser } = require("./requeteKnex");
 
@@ -283,11 +283,20 @@ exports.deleteUser = async(req,res) =>{
         await remove(child(database, `users/${user.uid}`), null)
         .then(()=>{
             deleteUser(user)
-            .then(()=>{
-                res.status(201).send({
-                    success:true,
-                    message: `votre compte a été supprimé`,
-                });
+            .then(async ()=>{
+                const delAvis = await deleteAvis(user.uid)
+                const delSuccess = await deleteService(id);
+                if(delSuccess && delAvis){
+                    res.status(201).send({
+                        success:true,
+                        message: `Utilisateur supprimé`,
+                    })
+                } else{
+                    res.status(500).send({
+                        success:false,
+                        message: `Erreur lors de la suppression de l'utilisateur`
+                    })
+                }
             })
             .catch(() => {
                 res.status(500).send({

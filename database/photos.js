@@ -28,7 +28,7 @@ router.post("/upload", upload.array('services', 10), (req, res) =>{
     let files = []
 
     req.files.forEach(file => {
-        files.push(`http://localhost:3000/profile/${file.filename}`)
+        files.push(`https://nearmeapi-equipe04.herokuapp.com/services/${file.filename}`)
     });
 
     res.json({
@@ -37,7 +37,7 @@ router.post("/upload", upload.array('services', 10), (req, res) =>{
     })
 });
 
-function erHandler(err, req, res, next){
+function erHandler(err, res){
     if(err instanceof multer.MulterError){
         res.json ({
             success: false,

@@ -281,7 +281,7 @@ module.exports = {
 
         UpdateUserPayload: {
           type: "object", // data-type
-          required: ["nom_user", "prenom_user", "telephone", "rue", "email_user", "pays", "prevince", "codePostal", "date_naissance"], // required fields
+          required: ["nom_user", "prenom_user", "telephone", "rue", "email_user", "pays", "prevince", "codePostal", "date_naissance", "description"], // required fields
           properties: {
             nom_user: {
               type: "string", // data-type
@@ -304,6 +304,12 @@ module.exports = {
             rue: {
               type: "string", // data-type
             },
+            date_naissance: {
+              type: "date-time", // data-type
+            },
+            description: {
+              type: "string", // data-type
+            },
             pays: {
               type: "string", // data-type
             },
@@ -323,6 +329,7 @@ module.exports = {
                 telephone: "0666666666",
                 email_user: "e2072931@site.com", 
                 password: "e2072931",
+                description: "je suis un jardinier",
                 date_naissance: "1999-09-10T20:23",
                 rue: "rue de la paix",
                 pays: "CANADA",
@@ -442,7 +449,7 @@ module.exports = {
         // modele de client
         UserResponse: {
           type: "object", // data-type
-          required: ["id_user", "nom_user", "prenom_user", "email_user", "pays", "prevince", "codePostal", "date_naissance"], // required fields
+          required: ["id_user", "nom_user", "prenom_user", "email_user", "pays", "date_naissance", "prevince", "codePostal", "date_naissance", "photoProfil", "description"], // required fields
           properties: {
             id_user: {
               type: "string", // data-type
@@ -455,13 +462,20 @@ module.exports = {
             },
             email_user: {
               type: "string", // data-type
-            },pays: {
+            },
+            pays: {
               type: "string", // data-type
             },
             province: {
               type: "string", // data-type
             },
             codePostal: {
+              type: "string", // data-type
+            },
+            date_naissance: {
+              type: "date-time", // data-type
+            },
+            description: {
               type: "string", // data-type
             },
             photoProfil: {
@@ -475,7 +489,7 @@ module.exports = {
                 telephone: "0666666666",
                 date_naissance: "1999-09-10T20:23",
                 email_user: "e2072931@site.com",
-                employe: false,
+                description: "je suis un etudiant",
                 pays: "CANADA",
                 province: "QUEBEC",
                 codePostal: "H1S1B4", 
