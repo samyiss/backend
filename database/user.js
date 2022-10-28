@@ -101,6 +101,7 @@ exports.updateProfile = async(req,res) =>{
     const photoProfil = req.body.photoProfil
     const password = req.body.password
     const Tel = req.body.telephone
+    const description = req.body.description
     
     // mettre à jour les données de l'utilisateur
     if(user !== null){
@@ -111,6 +112,7 @@ exports.updateProfile = async(req,res) =>{
                 email_user: email_user,
                 date_naissance: date_naissance,
                 telephone: Tel ? Tel : null,
+                description: description ? description : null,
                 rue: rue ? rue : null,
                 pays: pays? pays:null,
                 province: province? province:null,
