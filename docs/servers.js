@@ -1,7 +1,7 @@
 module.exports = {
     servers: [
       {
-        url: "https://nearmeapi-equipe04.herokuapp.com/", // url
+        url: "http://nearmeapi-equipe04.herokuapp.com/", // url
         description: "Local server", // name
       },
     ],

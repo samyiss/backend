@@ -1,7 +1,7 @@
 const { getAuth } = require("firebase/auth");
 
 const { fapp } = require('./firebaseconf');
-const { addService, getServices, getService, deleteService, updateService, getCategorieById, getAvis, deleteAvis } = require("./requeteKnex");
+const { addService, getServices, getService, deleteService, updateService, getCategorieById, getAvis, getImage } = require("./requeteKnex");
 const { get, child, ref, getDatabase } = require("firebase/database");
 
 
@@ -119,14 +119,27 @@ exports.deleteService = async(req,res) =>{
 exports.getService = async(req,res) =>{
     const id = req.params.idService;
     const database = ref(getDatabase());
-
+    console.log(id);
     try {
         const services = await getService(id);
         if(services.length !== 0) {
             let dataDisplay = [];
             services.forEach( async (service) => {
                 const avis = await getAvis(service.id_service);
+                const photos = await getImage(id);
+
                 let avisToDisplay = [];
+                let imageToDisplay = [];
+                if(photos.length !== 0) {
+                    photos.forEach( photo => {
+                        imageToDisplay.push({
+                            id: photo.id_photo,
+                            url: photo.imgURL,
+                        });
+                    });
+                } else {
+                    imageToDisplay = 'aucune photo';
+                }
 
                 avis.forEach( (a) => {
                     get(child(database, `users/${a.id_client}`)).then((data) => {
@@ -173,7 +186,8 @@ exports.getService = async(req,res) =>{
                                 photoCouverture: service.photoCouverture,
                                 datePublication: service.datePublication,
                                 dateModification: service.dateModification,
-                                avis: avisToDisplay
+                                avis: avisToDisplay,
+                                photos: imageToDisplay
                             }
                             res.status(200).json( dataDisplay );
                         

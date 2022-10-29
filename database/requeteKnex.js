@@ -21,7 +21,7 @@ function getServices() {
 
 // Requete pour get un service
 function getService(id) {
-    return knex('services')
+    return  knex('services')
                 .join('categories', 'categories.id_categorie', 'services.id_categorie')
                 .where('id_service', id);
 }
@@ -63,7 +63,7 @@ function getCategorieById(id) {
 
 //----------------------------------------------- PHOTOS -----------------------------------------------//
 
-//get des image
+//get pics by service
 function getImage(id) {
     return knex('photos').where('id_service', id);
 }
@@ -96,7 +96,7 @@ function addAvis(avis) {
 }
 
 function getAvis(id) {
-    return knex('avis').where('id_avis', id).orWhere('id_service', id).orWhere('id_user',id).orWhere('ic_client',id);
+    return knex('avis').where('id_avis', id).orWhere('id_service', id).orWhere('id_user',id).orWhere('id_client',id);
 }
 
 function updateAvis(id, avis) {
@@ -104,7 +104,7 @@ function updateAvis(id, avis) {
 }
 
 async function deleteAvis(id) {
-    await knex('avis').where('id_avis', id).orWhere('id_user',id).orWhere('ic_client',id).del();
+    await knex('avis').where('id_avis', id).orWhere('id_user',id).orWhere('id_client',id).del();
     const data = await getAvis(id);
     if (data.length === 0) {
         return true;
@@ -130,5 +130,6 @@ module.exports = {
     deleteAvis,
     addImage,
     updateImage,
-    deleteImage
+    deleteImage,
+    getImage
 };
