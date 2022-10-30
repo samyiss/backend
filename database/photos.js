@@ -52,7 +52,7 @@ exports.RaddImage = async (req, res) =>{
             files.forEach(async (file) => {
                 const photo = {
                     id_service: idService,
-                    imgURL: `http://localhost:3000/services/${file.filename}`
+                    imgURL: `https://nearmeapi-equipe04.herokuapp.com/services/${file.filename}`
                 }
                 await addImage(photo);
             });
