@@ -387,29 +387,30 @@ exports.getUser = async (req, res) => {
 
     const avis = await getAvisUser(idUser);
     let avisToDisplay = []
-
-    avis.forEach( (a) => {
-        get(child(database, `users/${a.id_client}`)).then((data) => {
-            if (data.exists()) {
-                const snapshot = data.val();
-                avisToDisplay.push({
-                    id_avis: a.id_avis,                                
-                    client: {
-                        id_client: a.id_client,
-                        nomClient: snapshot.nom_user,
-                        prenomClient: snapshot.prenom_user,
-                        photoProfil: snapshot.photoProfil? snapshot.photoProfil : 'aucune photo',
-                    },
-                    note: a.note,
-                    commentaire: a.commentaire,
-                    datePublication: a.datePublication,
-                })
-            } 
-            else {
-                avisToDisplay.push({ message: 'aucun avis trouvé' });
-            }
-        })                
-    })
+    if(avis.length !== 0 ) {
+        avis.forEach( (a) => {
+            get(child(database, `users/${a.id_client}`)).then((data) => {
+                if (data.exists()) {
+                    const snapshot = data.val();
+                    avisToDisplay.push({
+                        id_avis: a.id_avis,                                
+                        client: {
+                            id_client: a.id_client,
+                            nomClient: snapshot.nom_user,
+                            prenomClient: snapshot.prenom_user,
+                            photoProfil: snapshot.photoProfil? snapshot.photoProfil : 'aucune photo',
+                        },
+                        note: a.note,
+                        commentaire: a.commentaire,
+                        datePublication: a.datePublication,
+                    })
+                } 
+                
+            })                
+        })
+    } else {
+        avisToDisplay.push({ message: 'aucun avis trouvé' });
+    }
 
 
     get(child(database, `users/${idUser}`)).then(async (data) => {
