@@ -80,53 +80,6 @@ module.exports = {
             },
         },     
 
-        // modele pour service
-        ServiceResponse: {
-          type: "object", // type of the object
-          required: ["IdService", "vendeur", "categorie", "nomService", "prix", "datePublication"],
-          properties: {
-            vendeur: {
-              type: "object",
-              $ref: '#/components/schemas/UserLink',
-            },
-            categorie: {
-              type: "object",
-              $ref: '#/components/schemas/categorieResponse',
-            },
-            IdService: {
-              type: "int",
-            },
-            nomService: {
-              type: "string",
-            },
-            prix: {
-              type: "double",
-            },
-            datePublication: {
-              type: "date-time",
-            },
-          },
-          example: { 
-            vendeur : { 
-                        Id_user: "rM6hQMDHP9nACbds1XjV", 
-                        nom_user: "issiakhem",
-                        prenom_user: "samy", 
-                        photoProfil: "https://pokemonsapi.herokuapp.com/img/1.png"
-                      }, 
-            categorie : {
-                        idCategorie: 1,
-                        nomCategorie: "jardinerie"
-                      }, 
-            IdService: 1,
-            nomService: "jardinier", 
-            prix : "10.99", 
-            photoDeCouverture: "https://pokemonsapi.herokuapp.com/sprites/1.png", 
-            datePublication : "2022-09-10T20:23", 
-            avis : "liste de type avis", 
-            photos : "liste de type photos" 
-          },
-        },
-
         // modele pour avis
         AvisResponse: {
           type: "object", // type of the object
@@ -189,7 +142,7 @@ module.exports = {
         // modele pour un seul service
         OneServiceResponse: {
           type: "object", // type of the object
-          required: ["IdService", "vendeur", "categorie", "nomService", "description", "prix", "datePublication"],
+          required: ["IdService", "vendeur", "categorie", "nomService", "description", "prix", "datePublication", "avis", "photos"],
           properties: {
             vendeur: {
               type: "object",
@@ -214,6 +167,20 @@ module.exports = {
             datePublication: {
               type: "date-time",
             },
+            avis: {
+              type: "array",
+              items: {
+                type: "object",
+                $ref: '#/components/schemas/AvisResponse',
+              },
+            },
+            photos: {
+              type: "array",
+              items: {
+                type: "object",
+                $ref: '#/components/schemas/OnePhotoResponse',
+              },
+            },
           },
           example: { 
             vendeur : { 
@@ -232,6 +199,44 @@ module.exports = {
             prix : "10,99", 
             photoDeCouverture: "https://pokemonsapi.herokuapp.com/sprites/1.png", 
             datePublication : "2022-09-10T20:23", 
+            avis: [
+              {
+                client : {
+                            Id_user: "rM6hQMDHP9nACbds1XjV",
+                            nom_user: "issiakhem",
+                            prenom_user: "samy",
+                            photoProfil: "https://pokemonsapi.herokuapp.com/img/1.png"
+                          },
+                IdAvis: 1,
+                note: 5,
+                commentaire: "très bon service",
+                datePublication: "2022-09-10T20:23",
+              }
+            ],
+            photos: [
+              {
+                IdPhoto: 1,
+                photo: "https://pokemonsapi.herokuapp.com/sprites/1.png",
+              }
+            ]
+          },
+        },
+
+        // modele pour une seul photo response
+        OnePhotoResponse: {
+          type: "object", // type of the object
+          required: ["IdPhoto", "imgURL"],
+          properties: {
+            IdPhoto: {
+              type: "int",
+            },
+            photo: {
+              type: "string",
+            },
+          },
+          example: {
+            IdPhoto: 1,
+            imgURL: "https://pokemonsapi.herokuapp.com/sprites/1.png",
           },
         },
 
@@ -481,6 +486,18 @@ module.exports = {
             photoProfil: {
               type: "string", // data-type
             },
+            services: {
+              type: "array",
+              items: {
+                $ref: "#/components/schemas/ServiceLink",
+              },
+            },
+            avis: {
+              type: "array",
+              items: {
+                $ref: "#/components/schemas/AvisResponse",
+              },
+            },
           },
           example: { 
                 Id_user: "rM6hQMDHP9nACbds1XjV", 
@@ -494,6 +511,23 @@ module.exports = {
                 province: "QUEBEC",
                 codePostal: "H1S1B4", 
                 photoProfil: "https://pokemonsapi.herokuapp.com/img/1.png", 
+                services: [
+                    {
+                        IdService: 1,
+                        nomService: "jardinier",
+                        prix: "10.99",
+                        photoCouverture: "https://pokemonsapi.herokuapp.com/img/1.png",
+                        datePublication: "2017-07-21T17:32:28Z"
+                    }
+                ],
+                avis: [
+                    {
+                        IdAvis: 1,
+                        note: 5,
+                        commentaire: "je suis tres content",
+                        datePublication: "2017-07-21T17:32:28Z"
+                    }
+                ]
             },
         },
         // message de succes

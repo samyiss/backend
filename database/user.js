@@ -1,6 +1,6 @@
 const { getAuth, signInWithEmailAndPassword, sendEmailVerification, updateEmail, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential} = require("firebase/auth");
 const { getDatabase, ref, set, get, child, remove } = require("firebase/database");
-const { deleteService, deleteAvis } = require("./requeteKnex");
+const { deleteService, deleteAvis, getAvis, getAvisUser, getService } = require("./requeteKnex");
 const { fapp } = require('./firebaseconf');
 const { getServiceByUser } = require("./requeteKnex");
 
@@ -385,52 +385,86 @@ exports.getUser = async (req, res) => {
     const database = ref(getDatabase());
     const idUser = req.params.idUser
 
+    const avis = await getAvisUser(idUser);
+    let avisToDisplay = []
+
+    avis.forEach( (a) => {
+        get(child(database, `users/${a.id_client}`)).then((data) => {
+            if (data.exists()) {
+                const snapshot = data.val();
+                avisToDisplay.push({
+                    id_avis: a.id_avis,                                
+                    client: {
+                        id_client: a.id_client,
+                        nomClient: snapshot.nom_user,
+                        prenomClient: snapshot.prenom_user,
+                        photoProfil: snapshot.photoProfil? snapshot.photoProfil : 'aucune photo',
+                    },
+                    note: a.note,
+                    commentaire: a.commentaire,
+                    datePublication: a.datePublication,
+                })
+            } 
+            else {
+                avisToDisplay.push({ message: 'aucun avis trouvé' });
+            }
+        })                
+    })
+
 
     get(child(database, `users/${idUser}`)).then(async (data) => {
         if (data.exists()) {
             const snapshot = data.val();
-            await getServiceByUser(idUser).then((data) => {
-                let datatoDisplay = []
-                if(data !== []) {
-                    data.forEach((service) => {
-                        service = {
-                            Id_service: service.id_service,
-                            nomService: service.nomService,
-                            prix: service.prix,
-                            photoCouverture: service.photoCouverture,
-                            datePublication: service.datePublication,
-                        }
-                        datatoDisplay.push(service);
-                    });
 
-                    res.status(200).send({
-                        Id_user: snapshot.Id_user,
-                        nom_user: snapshot.nom_user,
-                        prenom_user: snapshot.prenom_user,
-                        email_user: snapshot.email_user,
-                        employe: snapshot.employe,
-                        rue: snapshot.rue,
-                        pays: snapshot.pays,
-                        province: snapshot.province,
-                        codePostal: snapshot.codePostal,
-                        photoProfil: snapshot.photoProfil,
-                        services: datatoDisplay
-                    });
-                } else {
-                    return res.status(404).json({ success: false, message: "aucun service à afficher" });
-                }
-            })
-        }
-        else{
+            
+            const service = await getServiceByUser(idUser);
+
+        
+            let datatoDisplay = []
+            if(service.length !== 0 ) {
+                service.forEach((service) => {
+                    service = {
+                        Id_service: service.id_service,
+                        nomService: service.nomService,
+                        prix: service.prix,
+                        note: service.note,
+                        photoCouverture: service.photoCouverture ? service.photoCouverture : 'aucune photo trouver',
+                        datePublication: service.datePublication,
+                    }
+                    datatoDisplay.push(service);
+                });
+            } else {
+                datatoDisplay.push({ message: 'aucun service trouvé' });
+            }
+
+        
+            console.log(avisToDisplay)
+
+            return res.status(200).send({
+                Id_user: snapshot.Id_user,
+                nom_user: snapshot.nom_user,
+                prenom_user: snapshot.prenom_user,
+                email_user: snapshot.email_user,
+                employe: snapshot.employe,
+                rue: snapshot.rue,
+                pays: snapshot.pays,
+                province: snapshot.province,
+                codePostal: snapshot.codePostal,
+                photoProfil: snapshot.photoProfil,
+                services: datatoDisplay,
+                avis: avisToDisplay
+            });
+                
+        } else{
             res.status(404).send({
                 success: false,
                 message: "l'utilisateur n'existe pas",
             });
-        }
-    }).catch(() => {
+        }  
+    }).catch((error) => {
         res.status(500).send({
             success: false,
-            message: "une erreur est survenue lors de la récupération des données de l'utilisateur",
+            message: error,
         });
     });
 }

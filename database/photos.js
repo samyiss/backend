@@ -1,49 +1,62 @@
-const multer = require('multer');
-const path = require('path');
-
-router.get('/categories/:image', (req, res) => {
-    res.sendFile(path.join(__dirname, '/categories/' + req.params.image));
-});
+const { addImage, getService } = require("./requeteKnex");
+const fs = require('fs')
 
 
-//add multiple pictures
-const storage = multer.diskStorage({
-    destination: './services',
-    filename: (req, file, cb) => {
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-});
-
-const upload = multer ({
-   storage: storage,
-});
-
-router.use('/services ', express.static('/serves'));
-
-router.get('/services/:image', (req, res) => {
-    res.sendFile(path.join(__dirname, '/services/' + req.params.image));
-});
-
-router.post("/upload", upload.array('services', 10), (req, res) =>{
-    let files = []
-
-    req.files.forEach(file => {
-        files.push(`https://nearmeapi-equipe04.herokuapp.com/services/${file.filename}`)
+function delete_file(data){
+    data.forEach(file => {
+        fs.unlinkSync('./services/'+file.filename);
     });
-
-    res.json({
-        success : true,
-        profile_url: files
-    })
-});
-
-function erHandler(err, res){
-    if(err instanceof multer.MulterError){
-        res.json ({
-            success: false,
-            message: err
-        })
-    }
 }
 
-router.use(erHandler);
+exports.RaddImage = async (req, res) =>{
+
+    let brek;
+
+    const idService = req.params.idService;
+    const files = req.files;
+
+    if(files.length === 0){
+        delete_file(req.files);
+        brek = 'break';
+        return res.status(400).json({success: false, message: `aucune image n'a été envoyée`});
+    }
+
+    if (files.length > 10){
+        delete_file(files);
+        brek = 'break';
+        return res.status(400).json({success: false, message: `vous ne pouvez pas ajouter plus de 10 images`});
+    }
+
+    const idData = await getService(idService);
+    if(idData.length === 0){
+        delete_file(files);
+        brek = 'break';
+        return res.status(404).json({success: false, message: `le service n'existe pas`});
+    }
+
+    if(brek === 'break') return;
+
+    else {
+        for (let file in files) {
+            console.log(files[file].filename);
+            if(files[file].mimetype !== "image/jpeg" && files[file].mimetype !== "image/png" && files[file].mimetype !== "image/jpg"){
+                delete_file(files);
+                brek = 'break';
+                return res.status(400).json({success: false, message: `vous ne pouvez pas ajouter d'autres types de fichiers que des images`});
+            }
+            else brek = 'continue';
+        }
+
+        if(brek === 'break') return;
+        else if (brek === 'continue'){
+            files.forEach(async (file) => {
+                const photo = {
+                    id_service: idService,
+                    imgURL: `http://localhost:3000/services/${file.filename}`
+                }
+                await addImage(photo);
+            });
+            return res.status(201).json({success: true, message: `les images ont été ajoutées avec succès`});
+        }
+    }
+}

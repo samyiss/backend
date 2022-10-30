@@ -116,7 +116,7 @@ exports.deleteService = async(req,res) =>{
     }
 }
 
-exports.getService = async(req,res) =>{
+exports.RgetService = async(req,res) =>{
     const id = req.params.idService;
     const database = ref(getDatabase());
     console.log(id);
@@ -125,7 +125,7 @@ exports.getService = async(req,res) =>{
         if(services.length !== 0) {
             let dataDisplay = [];
             services.forEach( async (service) => {
-                const avis = await getAvis(service.id_service);
+                const avis = await getAvis(id);
                 const photos = await getImage(id);
 
                 let avisToDisplay = [];

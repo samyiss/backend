@@ -1,5 +1,6 @@
 const knexModule = require('knex');
 const chaineConnexion = require('./dbConnexion');
+const fs = require('fs');
 
 const knex = knexModule(chaineConnexion);
 
@@ -35,6 +36,13 @@ function getServiceByUser(id) {
 async function deleteService(id) {
     await knex('avis').where('id_service', id).del()
     await knex('photos').where('id_service', id).del()
+
+    const images = await getImage(id);
+    images.forEach((image) => {
+        let imgURL = image.imgURL.replace('https://nearmeapi-equipe04.herokuapp.com', '.');
+        fs.unlinkSync(imgURL);
+    });
+
     await knex('services').where('id_service', id).del()
     const dataService = await getService(id);
     const dataAvis = await getAvis(id);
@@ -68,9 +76,13 @@ function getImage(id) {
     return knex('photos').where('id_service', id);
 }
 
+function getImagePhoto(id) {
+    return knex('photos').where('id_photo', id);
+}
+
 // Requete pour ajouter une photo
-function addImage(photos) {
-    return knex('photos').insert(photos)
+function addImage(photo) {
+    return knex('photos').insert(photo);
 }
 
 // Requete pour update une photo avec le id
@@ -80,8 +92,15 @@ function updateImage(id, photo) {
 
 // Requete pour supprimer une photo avec le id
 async function deleteImage(id) {
+
+    const dataImage = await getImagePhoto(id);
+    let imgURL = dataImage.imgURL.replace('https://nearmeapi-equipe04.herokuapp.com', '.');
+    dataImage.forEach(() => {
+        fs.unlinkSync(imgURL);
+    });
+
     await knex('photos').where('id_photo', id).del()
-    const data = await getImage(id);
+    const data = await getImagePhoto(id);
     if (data.length === 0) {
         return true;
     } else {
@@ -96,7 +115,11 @@ function addAvis(avis) {
 }
 
 function getAvis(id) {
-    return knex('avis').where('id_avis', id).orWhere('id_service', id).orWhere('id_user',id).orWhere('id_client',id);
+    return knex('avis').where('id_avis', id).orWhere('id_service', id).orWhere('id_user',id);
+}
+
+function getAvisUser(id) {
+    return knex('avis').where('id_user',id);
 }
 
 function updateAvis(id, avis) {
@@ -131,5 +154,6 @@ module.exports = {
     addImage,
     updateImage,
     deleteImage,
-    getImage
+    getImage,
+    getAvisUser
 };

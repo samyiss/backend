@@ -3,9 +3,12 @@ const bodyParser = require('body-parser');
 const docs = require('./docs');
 const swaggerUi = require('swagger-ui-express');
 const { registerUser, loginUsers, validate, getUser, getUsers, resetPassword, deleteUser, updateProfile, update_Password } = require('./database/user');
-const { createService, getAllServices, getService, deleteService, updateService } = require('./database/service');
+const { createService, getAllServices, RgetService, deleteService, updateService } = require('./database/service');
 const { getAllCategories, getCategorieById } = require('./database/categories');
 const { createAvis, updateAvis, deleteAvis } = require('./database/avis');
+const multer = require('multer');
+const path = require('path');
+const { RaddImage } = require('./database/photos');
 
 require("dotenv").config(); 
 
@@ -31,7 +34,7 @@ router.put('/service/:idService', updateService);
 router.post('/forget-password/:email', resetPassword)
 router.post('/service', createService)
 router.get('/services', getAllServices)
-router.get('/service/:idService', getService)
+router.get('/service/:idService', RgetService)
 router.post('/update-password', update_Password)
 router.delete('/service/:idService', deleteService)
 router.get('/categories', getAllCategories)
@@ -40,14 +43,9 @@ router.post('/avis/:idService', createAvis)
 router.put('/avis/:idAvis', updateAvis)
 router.delete('/avis/:idAvis', deleteAvis)
 
-
-const multer = require('multer');
-const path = require('path');
-
 router.get('/categories/:image', (req, res) => {
     res.sendFile(path.join(__dirname, '/categories/' + req.params.image));
 });
-
 
 //add multiple pictures
 const storage = multer.diskStorage({
@@ -58,38 +56,16 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer ({
-   storage: storage,
+    storage: storage
 });
 
-router.use('/services ', express.static('/serves'));
+router.use('/services ', express.static('/services'));
 
 router.get('/services/:image', (req, res) => {
     res.sendFile(path.join(__dirname, '/services/' + req.params.image));
 });
 
-router.post("/upload", upload.array('services', 10), (req, res) =>{
-    let files = []
-
-    req.files.forEach(file => {
-        files.push(`http://localhost:3000/profile/${file.filename}`)
-    });
-
-    res.json({
-        success : true,
-        profile_url: files
-    })
-});
-
-function erHandler(err, req, res, next){
-    if(err instanceof multer.MulterError){
-        res.json ({
-            success: false,
-            message: err
-        })
-    }
-}
-
-router.use(erHandler);
+router.post("/upload-Services/:idService", upload.array('services', undefined), RaddImage);
 
 
 const port = process.env.PORT || 3000;
