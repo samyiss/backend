@@ -17,6 +17,7 @@ const updateService = require('./services/update-service');
 const createAvis = require('./avis/create-avis');
 const updateAvis = require('./avis/update-avis');
 const deleteAvis = require('./avis/delete-avis');
+const addImage = require('./photos/add-photo');
 
 
 module.exports = {
@@ -69,6 +70,9 @@ module.exports = {
     '/avis/{idAvis}':{
       ...updateAvis,
       ...deleteAvis
+    },
+    '/upload-Services/{idService}':{
+      ...addImage,
     },
   } 
 }
