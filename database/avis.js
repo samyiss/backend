@@ -90,7 +90,7 @@ exports.updateAvis = async(req,res) =>{
             };
             // updte de données
             await updateAvis(id, DataToSend)
-            return res.status(201).json({ success : true, message: 'le service a été mis à jour' });
+            return res.status(201).json({ success : true, message: 'l\'avis a été mis à jour' });
         } catch (error) {
             return res.status(500).json({ success: false, message: "une erreur est survenu lors de la mise à jour" });
         }

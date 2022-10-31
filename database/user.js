@@ -99,13 +99,13 @@ exports.updateProfile = async(req,res) =>{
     const province = req.body.province
     const codePostal = req.body.codePostal
     const photoProfil = req.body.photoProfil
-    const password = req.body.password
     const Tel = req.body.telephone
     const description = req.body.description
     
     // mettre à jour les données de l'utilisateur
     if(user !== null){
-        if(nom_user !== "" && prenom_user !=="" && validate_email(email_user) && validate_password(password) || Tel !==""){
+        console.log(user.uid)
+        if(nom_user !== "" && prenom_user !=="" && validate_email(email_user) || Tel !==""){
             const user_data =  {
                 nom_user: nom_user,
                 prenom_user: prenom_user,
@@ -116,7 +116,7 @@ exports.updateProfile = async(req,res) =>{
                 rue: rue ? rue : null,
                 pays: pays? pays:null,
                 province: province? province:null,
-                codePostal: codePostal,
+                codePostal: codePostal ? codePostal:null,
                 photoProfil: photoProfil? photoProfil : null,
             } 
             set(child(database, `users/${user.uid}`), user_data)

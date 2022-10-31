@@ -57,7 +57,7 @@ module.exports = {
           in: "path", // location of the param
           schema: {
             type: "string", // data type
-            example: "e2072931@site.com", // example of the data
+            example: "e2072931@cmaisonneuve.qc.ca", // example of the data
           },
         },
       },
@@ -332,8 +332,7 @@ module.exports = {
                 nom_user: "issiakhem", 
                 prenom_user: "samy", 
                 telephone: "0666666666",
-                email_user: "e2072931@site.com", 
-                password: "e2072931",
+                email_user: "e2072931@cmaisonneuve.qc.ca", 
                 description: "je suis un jardinier",
                 date_naissance: "1999-09-10T20:23",
                 rue: "rue de la paix",
@@ -372,7 +371,7 @@ module.exports = {
                 nom_user: "issiakhem", 
                 prenom_user: "samy", 
                 telephone: "0666666666",
-                email_user: "e2072931@site.com", 
+                email_user: "e2072931@cmaisonneuve.qc.ca", 
                 password: "e2072931"
             },
         },
@@ -505,7 +504,7 @@ module.exports = {
                 prenom_user: "samy", 
                 telephone: "0666666666",
                 date_naissance: "1999-09-10T20:23",
-                email_user: "e2072931@site.com",
+                email_user: "e2072931@cmaisonneuve.qc.ca",
                 description: "je suis un etudiant",
                 pays: "CANADA",
                 province: "QUEBEC",
