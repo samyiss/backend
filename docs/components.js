@@ -75,8 +75,8 @@ module.exports = {
             },
           },
           example: {
-              email: "e2072931@site.com",
-              password: "e2072931",
+              email: "e2072931@cmaisonneuve.qc.ca",
+              password: "E2072931",
             },
         },     
 
