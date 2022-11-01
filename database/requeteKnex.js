@@ -7,7 +7,14 @@ const knex = knexModule(chaineConnexion);
 //----------------------------------------------- SERVICES -----------------------------------------------//
 // Requete pour post un service
 function addService(service) {
-    return knex('services').insert(service)
+    return knex('services').insert(service).returning('id_service');
+}
+
+// Requete pour update la phto de couverture d'un service
+function updateCover(id, photoCouverture) {
+    return knex('services').where('id_service', id).update({
+        photoCouverture,
+    });
 }
 
 // Requete pour update un service
@@ -155,5 +162,6 @@ module.exports = {
     updateImage,
     deleteImage,
     getImage,
-    getAvisUser
+    getAvisUser,
+    updateCover
 };

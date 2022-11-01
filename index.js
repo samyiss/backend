@@ -32,7 +32,6 @@ router.delete('/user', deleteUser);
 router.put('/user', updateProfile);
 router.put('/service/:idService', updateService);
 router.post('/forget-password/:email', resetPassword)
-router.post('/service', createService)
 router.get('/services', getAllServices)
 router.get('/service/:idService', RgetService)
 router.post('/update-password', update_Password)
@@ -65,7 +64,7 @@ router.get('/services/:image', (req, res) => {
     res.sendFile(path.join(__dirname, '/services/' + req.params.image));
 });
 
-router.post("/upload-Services/:idService", upload.array('services', undefined), RaddImage);
+router.post('/service', upload.array('services', undefined), createService)
 
 
 const port = process.env.PORT || 3000;
