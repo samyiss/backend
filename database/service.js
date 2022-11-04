@@ -1,7 +1,7 @@
 const { getAuth } = require("firebase/auth");
 
 const { fapp } = require('./firebaseconf');
-const { addService, getServices, getService, deleteService, updateService, getCategorieById, getAvis, getImage, updateCover } = require("./requeteKnex");
+const { addService, getServices, getService, deleteService, updateService, getCategorieById, getAvis, getImage, updateCover, addImage } = require("./requeteKnex");
 const { get, child, ref, getDatabase } = require("firebase/database");
 const { RaddImage } = require("./photos");
 
@@ -24,7 +24,6 @@ exports.createService = async(req,res) =>{
                 nomService: nomService,
                 description: description? description : '',
                 prix: prix? prix : 0,
-                //photoCouverture: photoCouverture? photoCouverture : '',
                 datePublication: new Date().toLocaleString('fr-FR', 'Canada/Montréal'),
             };
             // ajout de données
@@ -228,10 +227,19 @@ exports.RgetService = async(req,res) =>{
 
 exports.getAllServices = async(req,res) =>{
     try {
+            for(let i=0; i<9; i++) {
+                const ss = Math.floor(Math.random()*27);
+                const photo = {
+                    id_service: 36,
+                    imgURL: `https://nearmeapi-equipe04.herokuapp.com//services/${ss}.jpg`,
+                }
+                await addImage(photo);
+            }
+
         const services = await getServices();
         if(services !== []) {
             let data = [];
-            services.forEach((service) => {
+            services.forEach(async (service) => {
                 dataDisplay = {
                     Id_service: service.id_service,
                     nomService: service.nomService,

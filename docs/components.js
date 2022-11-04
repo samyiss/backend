@@ -16,7 +16,7 @@ module.exports = {
           in: "path", // location of the param
           schema: {
             type: "string", // data type
-            example: "xCipnGv4JDQ9oGnmMtgCPWs2FGo2", // example of the data
+            example: "bR1Qv0MsMIbPJs95ZeiBVzqLQFI3", // example of the data
           },
         },
         IdAvis: {
