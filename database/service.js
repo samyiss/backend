@@ -227,15 +227,6 @@ exports.RgetService = async(req,res) =>{
 
 exports.getAllServices = async(req,res) =>{
     try {
-            for(let i=0; i<9; i++) {
-                const ss = Math.floor(Math.random()*27);
-                const photo = {
-                    id_service: 36,
-                    imgURL: `https://nearmeapi-equipe04.herokuapp.com//services/${ss}.jpg`,
-                }
-                await addImage(photo);
-            }
-
         const services = await getServices();
         if(services !== []) {
             let data = [];
