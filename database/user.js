@@ -462,6 +462,7 @@ exports.getUser = async (req, res) => {
                 email_user: snapshot.email_user,
                 telephone: snapshot.telephone,
                 employe: snapshot.employe,
+                dataNaissance: snapshot.date_naissance,
                 rue: snapshot.rue,
                 pays: snapshot.pays,
                 province: snapshot.province,
