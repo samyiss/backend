@@ -456,19 +456,18 @@ exports.getUser = async (req, res) => {
 
             return res.status(200).send({
                 Id_user: snapshot.Id_user,
-                nom_user: snapshot.nom_user,
-                prenom_user: snapshot.prenom_user,
-                description: snapshot.description,
-                email_user: snapshot.email_user,
-                telephone: snapshot.telephone,
-                employe: snapshot.employe,
-                dataNaissance: snapshot.date_naissance,
-                rue: snapshot.rue,
-                pays: snapshot.pays,
-                province: snapshot.province,
-                codePostal: snapshot.codePostal,
-                photoProfil: snapshot.photoProfil,
-                services: datatoDisplay,
+                nom_user: snapshot.nom_user ? snapshot.nom_user : '',
+                prenom_user: snapshot.prenom_user ? snapshot.prenom_user : '',
+                description: snapshot.description ? snapshot.description : '',
+                email_user: snapshot.email_user ? snapshot.email_user : '',
+                telephone: snapshot.telephone ? snapshot.telephone : '',
+                dataNaissance: snapshot.date_naissance ? snapshot.date_naissance : '',
+                rue: snapshot.rue ? snapshot.rue : '',
+                pays: snapshot.pays ? snapshot.pays : '',
+                province: snapshot.province ? snapshot.province : '',
+                codePostal: snapshot.codePostal ? snapshot.codePostal : '',
+                photoProfil: snapshot.photoProfil ? snapshot.photoProfil : '',
+                services: datatoDisplay ,
                 avis: avisToDisplay
             });
                 
