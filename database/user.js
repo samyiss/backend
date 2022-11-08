@@ -1,4 +1,4 @@
-const { getAuth, signInWithEmailAndPassword, sendEmailVerification, updateEmail, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential} = require("firebase/auth");
+const { getAuth, signInWithEmailAndPassword, sendEmailVerification, updateEmail, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential, updateProfile} = require("firebase/auth");
 const { getDatabase, ref, set, get, child, remove } = require("firebase/database");
 const { deleteService, deleteAvis, getAvis, getAvisUser, getService } = require("./requeteKnex");
 const { fapp } = require('./firebaseconf');
@@ -28,6 +28,11 @@ exports.registerUser = async(req,res) =>{
 
     if(nom_user && prenom_user && validate_email(email_user) && validate_password(password) && Tel){
         await createUserWithEmailAndPassword(auth, email_user, password)
+        .then(() => {
+            user.updateProfile({
+                displayName: `${nom_user} ${prenom_user}`
+            })
+        })
         .then(() => {
             const user = auth.currentUser;
             const user_data =  {
@@ -123,6 +128,12 @@ exports.updateProfile = async(req,res) =>{
             .then(()=>{
                 //update email
                 updateEmail(user, email_user)
+                .then(() => {
+                    //update display name
+                    updateProfile(user, {
+                        displayName: `${nom_user} ${prenom_user}`
+                    })
+                })
                 .then(() => {
                     res.status(201).send({
                         success:true,
@@ -238,8 +249,10 @@ exports.resetPassword = async(req,res) =>{
     const email = req.params.email
     const password = req.body.password
 
-    if(email !==""){
-        sendPasswordResetEmail(auth, password)
+    console.log(email)
+
+    if(email !== ""){
+        sendPasswordResetEmail(auth, email, password)
         .then(()=>{
             res.status(201).send({
                 success:true,
@@ -263,7 +276,7 @@ exports.resetPassword = async(req,res) =>{
                 default:
                     res.status(500).json({ 
                         success: false,
-                        message: 'une erreur est survenue'
+                        message: error
                     });
                 }
         })
@@ -482,7 +495,10 @@ exports.loginUsers = async (req, res) => {
     if(email !== "" && password !== ""){
         await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
             const user = userCredential.user;
-            res.status(200).json({ token: user.stsTokenManager.accessToken });
+            res.status(200).json({ token: user.stsTokenManager.accessToken,
+                                   id: user.uid,
+                                   name: user.providerData[0].displayName
+                            });
         }).catch((error) => {
             switch(error.code) {
                 case "auth/user-not-found":
@@ -500,7 +516,7 @@ exports.loginUsers = async (req, res) => {
                 default:
                     res.status(500).json({ 
                         success: false,
-                        message: "un problème est survenu lors de la connexion"
+                        message: error
                      });
                 }   
         });
