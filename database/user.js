@@ -1,9 +1,8 @@
-const { getAuth, signInWithEmailAndPassword, sendEmailVerification, updateEmail, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential, updateProfile} = require("firebase/auth");
+const { getAuth, signInWithEmailAndPassword, sendEmailVerification, updateEmail, createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential, updateProfile, updatePhoneNumber} = require("firebase/auth");
 const { getDatabase, ref, set, get, child, remove } = require("firebase/database");
 const { deleteService, deleteAvis, getAvis, getAvisUser, getService } = require("./requeteKnex");
 const { fapp } = require('./firebaseconf');
 const { getServiceByUser } = require("./requeteKnex");
-
 
 function validate_email(email){
     const expression = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
@@ -41,6 +40,7 @@ exports.registerUser = async(req,res) =>{
                 prenom_user: prenom_user,
                 email_user: email_user,
                 telephone: Tel,
+                photoProfil: 'https://firebasestorage.googleapis.com/v0/b/projet03-af720.appspot.com/o/users%2Fuser.png?alt=media&token=acb2e059-23c9-484b-8289-cd20e93c59da'
             } 
             set(child(database, `users/${user.uid}`), user_data)
             .then(()=>{
@@ -106,7 +106,9 @@ exports.updateProfile = async(req,res) =>{
     const photoProfil = req.body.photoProfil
     const Tel = req.body.telephone
     const description = req.body.description
-    
+
+
+
     // mettre à jour les données de l'utilisateur
     if(user !== null){
         console.log(user.uid)
@@ -122,14 +124,12 @@ exports.updateProfile = async(req,res) =>{
                 pays: pays? pays:null,
                 province: province? province:null,
                 codePostal: codePostal ? codePostal:null,
-                photoProfil: photoProfil? photoProfil : null,
             } 
             set(child(database, `users/${user.uid}`), user_data)
             .then(()=>{
                 //update email
                 updateEmail(user, email_user)
                 .then(() => {
-                    //update display name
                     updateProfile(user, {
                         displayName: `${nom_user} ${prenom_user}`
                     })
@@ -466,7 +466,7 @@ exports.getUser = async (req, res) => {
                 pays: snapshot.pays ? snapshot.pays : '',
                 province: snapshot.province ? snapshot.province : '',
                 codePostal: snapshot.codePostal ? snapshot.codePostal : '',
-                photoProfil: snapshot.photoProfil ? snapshot.photoProfil : '',
+                photoProfil: snapshot.photoProfil ? snapshot.photoProfil : 'aucune photo',
                 services: datatoDisplay ,
                 avis: avisToDisplay
             });
@@ -492,12 +492,15 @@ exports.loginUsers = async (req, res) => {
 
     const auth = getAuth(fapp);
 
+
     if(email !== "" && password !== ""){
+        
         await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
             const user = userCredential.user;
             res.status(200).json({ token: user.stsTokenManager.accessToken,
                                    id: user.uid,
-                                   name: user.providerData[0].displayName
+                                   name: user.providerData[0].displayName,
+                                   photoURL: user.providerData[0].photoURL,
                             });
         }).catch((error) => {
             switch(error.code) {
