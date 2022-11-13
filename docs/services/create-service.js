@@ -14,24 +14,6 @@ module.exports = {
         required: true, // Mandatory param
         content: {
           // content-type
-          "multipart/form-data": {
-            schema: {
-              type: "object",
-              properties: {
-                service: {
-                  type: "json",
-                  $ref: "#/components/schemas/ServicePayload"
-                },
-                services: {
-                    type: "array",
-                    items: {
-                        type: "string",
-                        format: "binary"
-                    }
-                }
-              }
-            }
-          }, 
           "application/json": {
             schema: {
               $ref: "#/components/schemas/ServicePayload", // user data model   

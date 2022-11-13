@@ -3,16 +3,13 @@ const { getAuth } = require("firebase/auth");
 const { fapp } = require('./firebaseconf');
 const { addService, getServices, getService, deleteService, updateService, getCategorieById, getAvis, getImage, updateCover, addImage } = require("./requeteKnex");
 const { get, child, ref, getDatabase } = require("firebase/database");
-const { RaddImage } = require("./photos");
-
 
 exports.createService = async(req,res) =>{
     const auth = getAuth(fapp);
     const user = auth.currentUser;
 
     if (user !== null) {
-        const { Id_categorie, nomService, description, prix } = JSON.parse(req.body.service);
-
+        const { Id_categorie, nomService, description, prix, photos } = req.body;
 
         try {
             if (Id_categorie === undefined && nomService === undefined)
@@ -32,18 +29,17 @@ exports.createService = async(req,res) =>{
             if(!isNaN(row[0].id_service)){
 
                 const id = row[0].id_service;
-                const response = await RaddImage(id, req.files);
 
-                switch (response) {
-                    case 'none':
-                        return res.status(400).json({ success : false, message: 'aucune image ajoutée'});
-                    case 'limit 10':
-                        return res.status(400).json({ success : false, message: 'limite de 10 images atteinte'});
-                    case 'wrong format':
-                        return res.status(400).json({ success : false, message: 'seule les images au format jpg, jpeg et png sont acceptées'});
-                    case 'pic added':
-                        await updateCover(id, `https://nearmeapi-equipe04.herokuapp.com/services/${req.files[0].filename}`);
-                }
+                photos.forEach(async (photo) => {
+                    const photoToSend = {
+                        id_service: id,
+                        imgURL: photo,
+                    }
+                    await addImage(photoToSend);
+                    
+                });
+
+                
                 return res.status(201).json({ success : true, message: 'le service a été ajouté' });
             } else {
                 return res.status(500).json({ success: false, message: "une erreur est survenue lors de l'ajout" });

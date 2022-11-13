@@ -8,7 +8,6 @@ const { getAllCategories, getCategorieById } = require('./database/categories');
 const { createAvis, updateAvis, deleteAvis } = require('./database/avis');
 const multer = require('multer');
 const path = require('path');
-const { RaddImage } = require('./database/photos');
 
 require("dotenv").config(); 
 
@@ -46,25 +45,7 @@ router.get('/categories/:image', (req, res) => {
     res.sendFile(path.join(__dirname, '/categories/' + req.params.image));
 });
 
-//add multiple pictures
-const storage = multer.diskStorage({
-    destination: './services',
-    filename: (req, file, cb) => {
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-});
-
-const upload = multer ({
-    storage: storage
-});
-
-router.use('/services ', express.static('/services'));
-
-router.get('/services/:image', (req, res) => {
-    res.sendFile(path.join(__dirname, '/services/' + req.params.image));
-});
-
-router.post('/service', upload.array('services', undefined), createService)
+router.post('/service', createService)
 
 
 const port = process.env.PORT || 3000;

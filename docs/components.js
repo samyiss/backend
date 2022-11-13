@@ -257,16 +257,25 @@ module.exports = {
             prix: {
               type: "double",
             },
-            photoCouverture: {
-              type: "string",
-            },
+            photos: {
+              type: "array",
+              items: {
+                type: "object",
+                $ref: '#/components/schemas/PhotoPayload',
+              }
+            }
           },
           example: { 
             Id_categorie : 2, 
             nomService: "jardinier", 
             description: ". . .", 
             prix : "10.99", 
-            photoCouverture: "https://pokemonsapi.herokuapp.com/sprites/1.png",
+            photos: ["https://pokemonsapi.herokuapp.com/sprites/1.png",
+                     "https://pokemonsapi.herokuapp.com/sprites/2.png",
+                     "https://pokemonsapi.herokuapp.com/sprites/3.png",
+                     "https://pokemonsapi.herokuapp.com/sprites/4.png",
+                     "https://pokemonsapi.herokuapp.com/sprites/5.png"
+                    ],
           } ,
         },
 
@@ -342,6 +351,21 @@ module.exports = {
                 photoProfil: "https://pokemonsapi.herokuapp.com/img/1.png", 
             },
         },
+
+        // modele pour une seul photo payload
+        PhotoPayload: {
+          type: "object", // type of the object
+          required: ["photo"],
+          properties: {
+            photo: {
+              type: "string",
+            },
+          },
+          example: {
+            photo: "https://pokemonsapi.herokuapp.com/sprites/1.png",
+          },
+        },
+        
 
         // modele de input pour le user
         UserPayload: {
