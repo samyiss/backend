@@ -4,6 +4,8 @@ const tags = require('./tags');
 const components = require('./components');
 const users = require('./TagIndex');
 const services = require('./TagIndex');
+const favoris = require('./TagIndex');
+
 
 module.exports = {
     ...basicInfo,
@@ -11,7 +13,8 @@ module.exports = {
     ...tags,
     ...components,
     ...users,
-    ...services
+    ...services,
+    ...favoris
 };
 
 

@@ -22,6 +22,7 @@ exports.createService = async(req,res) =>{
                 description: description? description : '',
                 prix: prix? prix : 0,
                 datePublication: new Date().toLocaleString('fr-FR', 'Canada/Montréal'),
+                photoCouverture: photos[0]? photos[0] : 'https://firebasestorage.googleapis.com/v0/b/projet03-af720.appspot.com/o/services%2F2f938617-1281-4b44-a191-a7fa2df5602a?alt=media&token=0eb01e97-6fb2-441f-b233-43ef77435acb',
             };
             // ajout de données
             const row = await addService(DataToSend)

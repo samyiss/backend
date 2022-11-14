@@ -17,7 +17,10 @@ const updateService = require('./services/update-service');
 const createAvis = require('./avis/create-avis');
 const updateAvis = require('./avis/update-avis');
 const deleteAvis = require('./avis/delete-avis');
-const addImage = require('./photos/add-photo');
+const getAllFavoris = require('./favoris/get-allfavorite');
+const checkFavoris = require('./favoris/check-Favorite');
+const addfavoris = require('./favoris/add-favorite');
+const deleteFavoris = require('./favoris/delete-Favorite')
 
 
 module.exports = {
@@ -71,8 +74,11 @@ module.exports = {
       ...updateAvis,
       ...deleteAvis
     },
-    '/upload-Services/{idService}':{
-      ...addImage,
+    '/favoris/{idUser}/{idCatégorie}':{
+      ...getAllFavoris,
+      ...checkFavoris,
+      ...addfavoris,
+      ...deleteFavoris
     },
   } 
 }
