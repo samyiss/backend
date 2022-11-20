@@ -11,7 +11,7 @@ exports.getAllFavoris = async(req,res) =>{
     const user = auth.currentUser;
     const database = ref(getDatabase());
 
-    if (user === null) {
+    if (user !== null) {
 
         try{
             const favorites = await getFavorites(user.uid);
