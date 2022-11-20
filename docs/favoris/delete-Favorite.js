@@ -4,22 +4,24 @@ module.exports = {
         tags: ["Favoris"], // operation's tag.
         parameters: [
             {
-                $ref: '#/components/parameters/IdUser',// data model of the param
-                $ref: '#/components/parameters/IdCatégorie' // data model of the param
+                $ref: '#/components/parameters/IdUserFav',// data model of the param
             },
-        ], // expected params.
+            {
+                $ref: '#/components/parameters/IdServiceFav' // data model of the param
+            }
+        ],
         security: [
             {
                 bearerAuth: []
             }
         ],
-        summary: "supprimer une catégorie des favoris", // operation's desc.
-        operationId: "deleteService", // unique operation email
+        summary: "supprimer un service ou un utilisateur des favoris", // operation's desc.
+        operationId: "deleteFavorite", // unique operation email
         // expected responses
         responses: {
             // response code
             201: {
-                description: "Le catégorie a été supprimé", // response desc.
+                description: "Le service / user a été supprimé", // response desc.
                 content: {
                     // content-type
                     "application/json": {
@@ -37,6 +39,18 @@ module.exports = {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/ErrorMessage", // user data model
+                        },
+                    },
+                },
+            },
+            // response code
+            400: {
+                description: "réponse si le paramétre est invalide ou manque de données", // response desc.
+                content: {
+                    // content-type
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/ErrorMessage", // error data model
                         },
                     },
                 },

@@ -75,47 +75,6 @@ function getCategorieById(id) {
                 .where('id_categorie', id);;
 }
 
-
-//----------------------------------------------- PHOTOS -----------------------------------------------//
-
-//get pics by service
-function getImage(id) {
-    return knex('photos').where('id_service', id);
-}
-
-function getImagePhoto(id) {
-    return knex('photos').where('id_photo', id);
-}
-
-// Requete pour ajouter une photo
-function addImage(photo) {
-    return knex('photos').insert(photo);
-}
-
-// Requete pour update une photo avec le id
-function updateImage(id, photo) {
-    return knex('photos').where('id_photo', id).update(photo);  
-}
-
-// Requete pour supprimer une photo avec le id
-async function deleteImage(id) {
-
-    const dataImage = await getImagePhoto(id);
-    let imgURL = dataImage.imgURL.replace('https://nearmeapi-equipe04.herokuapp.com', '.');
-    dataImage.forEach(() => {
-        fs.unlinkSync(imgURL);
-    });
-
-    await knex('photos').where('id_photo', id).del()
-    const data = await getImagePhoto(id);
-    if (data.length === 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-
 //----------------------------------------------- AVIS -----------------------------------------------//
 function addAvis(avis) {
     return knex('avis').insert(avis);
@@ -143,6 +102,30 @@ async function deleteAvis(id) {
     }
 }
 
+//----------------------------------------------- FAVORIS -----------------------------------------------//
+function getFavorites(id) {
+    return knex('favoris').where('id_user', id);
+}
+
+function addFavoris(fav) {
+    return knex('favoris').insert(fav);
+}
+
+function deleteFavorisService(userID,idService) {
+    return knex('favoris').where('id_user', userID).andWhere('id_favService', idService).del();
+}
+
+function checkFavorisService(userID, idService) {
+    return knex('favoris').where('id_user', userID).andWhere('id_favService', idService);
+}
+
+function checkFavorisUser(userID, idUser) {
+    return knex('favoris').where('id_user', userID).andWhere('id_favUser', idUser);
+}
+
+function deleteFavorisUser(userID,idUser) {
+    return knex('favoris').where('id_user', userID).andWhere('id_favUser', idUser).del();
+}
 
 
 module.exports = {
@@ -158,10 +141,12 @@ module.exports = {
     getAvis,
     updateAvis,
     deleteAvis,
-    addImage,
-    updateImage,
-    deleteImage,
-    getImage,
     getAvisUser,
-    updateCover
+    updateCover,
+    addFavoris,
+    checkFavorisService,
+    checkFavorisUser,
+    deleteFavorisService,
+    deleteFavorisUser,
+    getFavorites
 };

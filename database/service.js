@@ -228,7 +228,6 @@ exports.getAllServices = async(req,res) =>{
         if(services !== []) {
             let data = [];
             services.forEach(async (service) => {
-                console.log(service);
                 dataDisplay = {
                     Id_service: service.id_service,
                     nomService: service.nomService,

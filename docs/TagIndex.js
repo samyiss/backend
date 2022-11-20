@@ -74,8 +74,10 @@ module.exports = {
       ...updateAvis,
       ...deleteAvis
     },
-    '/favoris/{idUser}/{idCatégorie}':{
+    '/favorites':{
       ...getAllFavoris,
+    },
+    '/favorite':{
       ...checkFavoris,
       ...addfavoris,
       ...deleteFavoris

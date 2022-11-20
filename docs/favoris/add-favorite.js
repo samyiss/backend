@@ -4,27 +4,20 @@ module.exports = {
         tags: ["Favoris"], // operation's tag.
         parameters: [
             {
-                $ref: '#/components/parameters/IdUser',// data model of the param
-                $ref: '#/components/parameters/IdCatégorie' // data model of the param
+                $ref: '#/components/parameters/IdUserFav',// data model of the param
             },
-        ],
+            {
+                $ref: '#/components/parameters/IdServiceFav' // data model of the param
+            }
+        ],  
+        
         security: [
             {
                 bearerAuth: []
             }
         ],
-        summary: "Route pour ajouter une catégoris  aux favoris du users", // operation's desc.
-        operationId: "addFavoris", // unique operation id.
-        requestBody:{
-            required: false, // Mandatory param
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/ServicePayload", // user data model
-                    },
-                },
-            },
-        },
+        summary: "Route pour ajouter un service ou un utilisateur aux favoris d'un user", // operation's desc.
+        operationId: "addFavorite", // unique operation id.
         // expected responses
         responses: {
             // response code
@@ -47,6 +40,18 @@ module.exports = {
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/ErrorMessage", // user data model
+                        },
+                    },
+                },
+            },
+            // response code
+            404: {
+                description: "réponse si le service ou l'utilisateur n'est pas trouvé", // response desc.
+                content: {
+                    // content-type
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/ErrorMessage", // error data model
                         },
                     },
                 },

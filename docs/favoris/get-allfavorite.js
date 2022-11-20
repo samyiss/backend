@@ -2,29 +2,35 @@ module.exports = {
     // operation's method
     get: {
         tags: ["Favoris"], // operation's tag.
-        parameters: [
-            {
-                $ref: '#/components/parameters/IdUser',// data model of the param
-                $ref: '#/components/parameters/IdCatégorie' // data model of the param
-            },
-        ],
         security: [
             {
                 bearerAuth: []
             }
         ],
         summary: "liste de favoris", // operation's desc.
-        operationId: "getAllfavoris", // unique operation email
+        operationId: "getFavorites", // unique operation email
         // expected responses
         responses: {
             // response code
             200: {
-                description: "les données des services sont retournées", // response desc.
+                description: "Liste des pokemons favoris de l'utilisateur", // response desc.
                 content: {
                     // content-type
                     "application/json": {
                         schema: {
                             $ref: "#/components/schemas/ServiceLink", // user data model
+                        },
+                    },
+                },
+            },
+            // response code
+            401: {
+                description: "réponse si l'utilisateur n'est pas connecteé", // response desc.
+                content: {
+                    // content-type
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/ErrorMessage", // user data model
                         },
                     },
                 },

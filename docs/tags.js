@@ -13,9 +13,6 @@ module.exports = {
         name: "Categories de services", // name of a tag
       },
       {
-        name: "Photos", // name of a tag
-      },
-      {
         name: "Favoris", // name of a tag
       }
     ],

@@ -49,6 +49,28 @@ module.exports = {
             example: 11, // example of the data
           },
         },
+        IdUserFav: {
+          name: "idUser", // name of the param
+          type: "parameter", // type of the object
+          description: "Id de l'utilisateur", // param desc.
+          in: "query", // location of the param
+          schema: {
+            type: "string", // data type
+            example: "bR1Qv0MsMIbPJs95ZeiBVzqLQFI3", // example of the data
+          },
+        },
+
+        IdServiceFav: {
+          name: "idService", // name of the param
+          type: "parameter", // type of the object
+          description: "Id du service", // param desc.
+          in: "query", // location of the param
+          schema: {
+            type: "int", // data type
+            example: 6, // example of the data
+          },
+        },
+
         // modele pour connexion
         EmailPayload: {
           name: "email", // name of the param
@@ -116,6 +138,34 @@ module.exports = {
           },
         },
 
+        // modele pour ajout favoris
+        FavorisCreationPayload: {
+          type: "object", // type of the object
+          required: ["isFavorite"],
+          properties: {
+            isFavorite: {
+              type: "boolean",
+            },
+          },
+          example: {
+            isFavorite: true,
+          },
+        },
+
+        // modele pour delete favoris
+        FavorisDeletePayload: {
+          type: "object", // type of the object
+          required: ["isFavorite"],
+          properties: {
+            isFavorite: {
+              type: "boolean",
+            },
+          },
+          example: {
+            isFavorite: false,
+          },
+        },
+              
         // modele pour avis payload
         AvisPayload: {
           type: "object", // type of the object

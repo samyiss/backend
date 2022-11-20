@@ -8,6 +8,7 @@ const { getAllCategories, getCategorieById } = require('./database/categories');
 const { createAvis, updateAvis, deleteAvis } = require('./database/avis');
 const multer = require('multer');
 const path = require('path');
+const { getAllFavoris, addfavoris, deleteFavoris, checkFavoris } = require('./database/favoris');
 
 require("dotenv").config(); 
 
@@ -40,6 +41,11 @@ router.get('/categorie/:idCategorie', getCategorieById)
 router.post('/avis/:idService', createAvis)
 router.put('/avis/:idAvis', updateAvis)
 router.delete('/avis/:idAvis', deleteAvis)
+router.get('/favorites', getAllFavoris)
+router.post('/favorite', addfavoris)
+router.delete('/favorite', deleteFavoris)
+router.get('/favorite', checkFavoris)
+
 
 router.get('/categories/:image', (req, res) => {
     res.sendFile(path.join(__dirname, '/categories/' + req.params.image));
