@@ -152,7 +152,7 @@ exports.RgetService = async(req,res) =>{
                         });
                     });
                 } else {
-                    imageToDisplay = 'aucune photo';
+                    imageToDisplay = [];
                 }
 
                 avis.forEach( (a) => {
@@ -165,7 +165,7 @@ exports.RgetService = async(req,res) =>{
                                     id_client: a.id_client,
                                     nomClient: snapshot.nom_user,
                                     prenomClient: snapshot.prenom_user,
-                                    photoProfil: snapshot.photoProfil? snapshot.photoProfil : 'aucune photo',
+                                    photoProfil: snapshot.photoProfil? snapshot.photoProfil : [],
                                 },
                                 note: a.note,
                                 commentaire: a.commentaire,
