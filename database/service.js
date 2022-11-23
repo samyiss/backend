@@ -1,7 +1,7 @@
 const { getAuth } = require("firebase/auth");
 
 const { fapp } = require('./firebaseconf');
-const { addService, getServices, getService, deleteService, updateService, getCategorieById, getAvis, getImage, updateCover, addImage } = require("./requeteKnex");
+const { addService, getServices, getService, deleteService, updateService, getCategorieById, getAvis, getImage, addImage } = require("./requeteKnex");
 const { get, child, ref, getDatabase } = require("firebase/database");
 
 exports.createService = async(req,res) =>{

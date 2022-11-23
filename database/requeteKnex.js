@@ -127,6 +127,16 @@ function deleteFavorisUser(userID,idUser) {
     return knex('favoris').where('id_user', userID).andWhere('id_favUser', idUser).del();
 }
 
+//----------------------------------------------- PHOTOS -----------------------------------------------//
+function addImage(image) {
+    return knex('photos').insert(image);
+}
+
+function getImage(id) {
+    return knex('photos').where('id_service', id);
+}
+
+
 
 module.exports = {
     addService,
@@ -148,5 +158,7 @@ module.exports = {
     checkFavorisUser,
     deleteFavorisService,
     deleteFavorisUser,
-    getFavorites
+    getFavorites,
+    addImage,
+    getImage
 };
