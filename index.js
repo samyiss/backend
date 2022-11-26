@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const docs = require('./docs');
 const swaggerUi = require('swagger-ui-express');
 const { registerUser, loginUsers, validate, getUser, getUsers, resetPassword, deleteUser, updateProfile, update_Password } = require('./database/user');
@@ -19,6 +21,9 @@ router.use(bodyParser.urlencoded({ extended : false }));
 router.use(bodyParser.json());
 
 app.use(router);
+
+app.use(cors());
+app.use(express.json());
 
 //router.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/',swaggerUi.serve, swaggerUi.setup(docs));
