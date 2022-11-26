@@ -22,8 +22,8 @@ router.use(bodyParser.json());
 
 app.use(router);
 
-app.use(cors());
-app.use(express.json());
+router.use(cors());
+router.use(express.json());
 
 //router.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/',swaggerUi.serve, swaggerUi.setup(docs));
