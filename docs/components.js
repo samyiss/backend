@@ -343,6 +343,50 @@ module.exports = {
             },
         },
 
+        // modele pour un message
+        MessageResponse: {
+          type: "object", // type of the object
+          required: ["id_message", "id_send", "id_receive","txt_message","date_message"],
+          properties: {
+            id_message: {
+              type: "int",
+            },
+            id_send: {
+              type: "string",
+            },
+            id_receive: {
+              type: "string",
+            },
+            txt_message: {
+              type: "string",
+            },
+            date_message: {
+              type: "string",
+            },
+          },
+          example: { 
+            id_message: 1,
+            id_send : "UvQb172x1dMuDJORFi9FNSGhPR72",
+            id_receive : "Ed40Vws0meSivOHb5BiwhRu56Kg1",
+            txt_message : "Bonjour",
+            date_message : "2022-09-10, 20:23",
+          },
+        },
+
+        // modele pour un message
+        MessagePayload: {
+          type: "object", // type of the object
+          required: ["txt_message"],
+          properties: {
+            txt_message: {
+              type: "string",
+            },
+          },
+          example: { 
+            txt_message : "Bonjour",
+          },
+        },
+
         UpdateUserPayload: {
           type: "object", // data-type
           required: ["nom_user", "prenom_user", "telephone", "rue", "email_user", "pays", "prevince", "codePostal", "date_naissance", "description"], // required fields

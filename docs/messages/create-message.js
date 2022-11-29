@@ -1,22 +1,26 @@
 module.exports = {
     // method of operation
     post: {
-      tags: ["Services"], // operation's tag.
+      tags: ["Messages"], // operation's tag.
       security: [
         {
           bearerAuth: []
         }
       ],
-      summary: "Route pour créer un service", // operation's desc.
-      operationId: "createService", // unique operation id.
-      parameters: [], // expected params.
+      summary: "Route pour envoyer un message", // operation's desc.
+      operationId: "createMessage", // unique operation id.
+      // expected responses
+      parameters: [
+        {
+            $ref: '#/components/parameters/IdUser' // data model of the param
+        },
+      ], // expected params.
       requestBody:{
         required: true, // Mandatory param
         content: {
-          // content-type
           "application/json": {
             schema: {
-              $ref: "#/components/schemas/ServicePayload", // user data model   
+              $ref: "#/components/schemas/MessagePayload", // user data model   
             },
           }, 
         },
@@ -25,7 +29,7 @@ module.exports = {
       responses: {
         // response code
         201: {
-          description: "La réponse lorsque le service est ajoutée", // response desc.
+          description: "reponse si le message est envoyé", // response desc.
           content: {
             // content-type
             "application/json": {
@@ -50,6 +54,18 @@ module.exports = {
         // response code
         400: {
           description: "réponse si le paramétre est invalide ou manque de données", // response desc.
+          content: {
+            // content-type
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/ErrorMessage", // error data model
+              },
+            },
+          },
+        },
+        // response code
+        404: {
+          description: "réponse si le service ou la personne n'est pas trouvée", // response desc.
           content: {
             // content-type
             "application/json": {

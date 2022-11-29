@@ -136,6 +136,24 @@ function getImage(id) {
     return knex('photos').where('id_service', id);
 }
 
+//----------------------------------------------- MESSAGES -----------------------------------------------//
+async function getAllMessages(idSend) {
+    const msg = await knex('messages').select('id_receive').where('id_send', idSend);
+    let user =[]
+    msg.forEach( async (message) => {
+        user.push(message.id_receive)
+    })
+    var unique = [...new Set(user)];
+    return unique
+}
+
+function getMessages(idSend, idReceive) {
+    return knex('messages').where('id_send', idSend).andWhere('id_receive', idReceive);
+}
+
+function addMessage(message) {
+    return knex('messages').insert(message);
+}
 
 
 module.exports = {
@@ -160,5 +178,8 @@ module.exports = {
     deleteFavorisUser,
     getFavorites,
     addImage,
-    getImage
+    getImage,
+    getAllMessages,
+    getMessages,
+    addMessage,
 };

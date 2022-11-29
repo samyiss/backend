@@ -20,7 +20,11 @@ const deleteAvis = require('./avis/delete-avis');
 const getAllFavoris = require('./favoris/get-allfavorite');
 const checkFavoris = require('./favoris/check-Favorite');
 const addfavoris = require('./favoris/add-favorite');
-const deleteFavoris = require('./favoris/delete-Favorite')
+const deleteFavoris = require('./favoris/delete-Favorite');
+
+const addMessage = require('./messages/create-message');
+const getMessage = require('./messages/get-message');
+const getAllMessage = require('./messages/get-AllMessage');
 
 
 module.exports = {
@@ -82,5 +86,12 @@ module.exports = {
       ...addfavoris,
       ...deleteFavoris
     },
+    '/message/{idUser}':{
+      ...addMessage,
+      ...getMessage,
+    },
+    '/messages':{
+      ...getAllMessage
+    }
   } 
 }

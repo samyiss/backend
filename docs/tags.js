@@ -14,6 +14,9 @@ module.exports = {
       },
       {
         name: "Favoris", // name of a tag
-      }
+      },
+      {
+        name: "Messages", // name of a tag
+      },
     ],
   };
