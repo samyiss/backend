@@ -29,7 +29,8 @@ exports.registerUser = async(req,res) =>{
         await createUserWithEmailAndPassword(auth, email_user, password)
         .then(() => {
             updateProfile(auth.currentUser, {
-                displayName: `${nom_user} ${prenom_user}`
+                displayName: `${nom_user} ${prenom_user}`,
+                photoURL: 'https://firebasestorage.googleapis.com/v0/b/projet03-af720.appspot.com/o/users%2Fuser.png?alt=media&token=acb2e059-23c9-484b-8289-cd20e93c59da'
             })
         })
         .then(() => {
