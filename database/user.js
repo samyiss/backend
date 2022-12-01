@@ -28,7 +28,7 @@ exports.registerUser = async(req,res) =>{
     if(nom_user && prenom_user && validate_email(email_user) && validate_password(password) && Tel){
         await createUserWithEmailAndPassword(auth, email_user, password)
         .then(() => {
-            user.updateProfile({
+            updateProfile(auth.currentUser, {
                 displayName: `${nom_user} ${prenom_user}`
             })
         })
