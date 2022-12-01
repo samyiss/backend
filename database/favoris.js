@@ -33,9 +33,9 @@ exports.getAllFavoris = async(req,res) =>{
                 if (favorite.id_favUser !== null) {
                     const user = await get(child(database, `users/${favorite.id_favUser}`))
                     favUsers.push({
-                        Id_user: user.key,
-                        nom_user: user.val().nom_user,
-                        prenom_user: user.val().prenom_user,
+                        id_client: user.key,
+                        nomClient: user.val().nom_user,
+                        prenomClient: user.val().prenom_user,
                         photoProfil: user.val().photoProfil,
                     })  
                 }
